@@ -1,7 +1,7 @@
 import React from "react";
 
 function NextButton({ dispatch, answer }) {
-  if (answer === undefined) return null;
+  if (answer === null) return null;
   return (
     <button
       className="btn btn-ui"

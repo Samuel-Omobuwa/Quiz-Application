@@ -1,5 +1,6 @@
 import React from "react";
 
+
 function Option({ question, dispatch, answer }) {
   const hasAnswered = answer !== null;
   return (
@@ -20,6 +21,7 @@ function Option({ question, dispatch, answer }) {
           {option}
         </button>
       ))}
+      
     </div>
   );
 }

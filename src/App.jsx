@@ -51,7 +51,8 @@ function reducer(state, action) {
     case "nextQuestion":
       return {
         ...state,
-        index: state.index + 1, answer: null,
+        index: state.index + 1,
+        answer: null,
       };
     default:
       throw new Error("Unknown action: " + action.type);
@@ -59,12 +60,16 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [{ questions, status, index, answer }, dispatch] = useReducer(
+  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
     reducer,
     initialState
   );
 
   const totalQuestions = questions.length;
+  const maxPossiblePoints = questions.reduce(
+    (prev, curr) => prev + curr.points,
+    0
+  );
 
   useEffect(function () {
     fetch("http://localhost:5000/questions")
@@ -84,13 +89,19 @@ export default function App() {
         )}
         {status === "active" && (
           <>
-          <Progress index={index} totalQuestions={totalQuestions} />
-          <Question
-            question={questions[index]}
-            dispatch={dispatch}
-            answer={answer}
-          />
-          <NextButton dispatch={dispatch} answer={answer} />
+            <Progress
+              index={index}
+              totalQuestions={totalQuestions}
+              points={points}
+              maxPossiblePoints={maxPossiblePoints}
+              answer={answer}
+            />
+            <Question
+              question={questions[index]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
           </>
         )}
       </MainContent>
