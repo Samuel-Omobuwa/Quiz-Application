@@ -5,6 +5,8 @@ import Loader from "./components/Loader";
 import Error from "./components/Error";
 import StartScreen from "./components/StartScreen";
 import Question from "./components/Question";
+import NextButton from "./components/NextButton";
+import Progress from "./components/Progress";
 
 const initialState = {
   questions: [],
@@ -34,19 +36,23 @@ function reducer(state, action) {
         ...state,
         status: "active",
       };
-      case 'newAnswer': {
-        const question = state.questions.at(state.index);
+    case "newAnswer": {
+      const question = state.questions.at(state.index);
 
-        return { 
-          ...state, 
-          answer: action.payLoad,
-          points: action.payload === question.correctOption ? state.points + question.points : state.points,
-        };
-      }
-      case 'nextQuestion':
-        return {
-          ...state, index: state.index + 1
-        }
+      return {
+        ...state,
+        answer: action.payLoad,
+        points:
+          action.payload === question.correctOption
+            ? state.points + question.points
+            : state.points,
+      };
+    }
+    case "nextQuestion":
+      return {
+        ...state,
+        index: state.index + 1, answer: null,
+      };
     default:
       throw new Error("Unknown action: " + action.type);
   }
@@ -76,7 +82,17 @@ export default function App() {
         {status === "ready" && (
           <StartScreen totalQuestions={totalQuestions} dispatch={dispatch} />
         )}
-        {status === "active" && <Question question={questions[index]} dispatch={dispatch} answer={answer} />}
+        {status === "active" && (
+          <>
+          <Progress index={index} totalQuestions={totalQuestions} />
+          <Question
+            question={questions[index]}
+            dispatch={dispatch}
+            answer={answer}
+          />
+          <NextButton dispatch={dispatch} answer={answer} />
+          </>
+        )}
       </MainContent>
     </div>
   );
