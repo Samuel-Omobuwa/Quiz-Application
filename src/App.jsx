@@ -69,7 +69,7 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
+  const [{ questions, status, index, answer, points, highscore }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -124,6 +124,7 @@ export default function App() {
             points={points}
             maxPossiblePoints={maxPossiblePoints}
             totalQuestions={totalQuestions}
+            highscore={highscore}
           />
         )}
       </MainContent>
